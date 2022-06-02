@@ -1,6 +1,5 @@
 html,
-body,
-#app {
+body {
   margin: 0;
   height: 100%;
   width: 100%;
@@ -15,12 +14,6 @@ li {
   list-style-type: none;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 50px;
-}
-
 .flex {
   display: flex;
   flex-wrap: wrap;
@@ -30,13 +23,13 @@ li {
   justify-content: space-between;
 }
 
-.header-lg {
+.header-large {
   font-size: 35px;
   font-weight: 500;
   margin: 20px 0;
 }
 
-.header-sm {
+.header-small {
   font-size: 20px;
   font-weight: 400;
   margin: 10px;
@@ -44,10 +37,4 @@ li {
 
 .center-text {
   text-align: center;
-}
-
-.error {
-  color: #ff1616;
-  font-size: 20px;
-  margin: 50px 0;
 }

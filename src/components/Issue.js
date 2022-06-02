@@ -19,9 +19,9 @@ const Issue = ({ number, title, url, children }) => {
   return (
     <div className="card">
       <a href={url}>
-        <h2 className="header-sm center-text">#{number}</h2>
+        <h2 className="header-small center-text">#{number}</h2>
       </a>
-      <h2 className="header-sm center-text">{title}</h2>
+      <h2 className="header-small center-text">{title}</h2>
       {children}
       <style jsx>{style}</style>
     </div>

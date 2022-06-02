@@ -17,10 +17,6 @@ const style = css`
   .card-list li:not(:last-of-type) {
     margin-bottom: 5px;
   }
-  .card-list svg {
-    margin-right: 5px;
-    height: 20px;
-  }
 `;
 
 const IssueList = ({ dataList }) => {
