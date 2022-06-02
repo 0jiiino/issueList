@@ -1,17 +1,13 @@
 import axios from "axios";
 
 export const getDatas = async () => {
-  const dataList = (
-    await axios.get(`${process.env.URI}`, {
-      headers: {
-        Authorization: `token ${process.env.TOKEN}`,
-      },
-    })
-  ).data;
+  const { data } = await axios.get(`${process.env.URI}`, {
+    headers: {
+      Authorization: `token ${process.env.TOKEN}`,
+    },
+  });
 
-  dataList.sort((a, b) => b.comments - a.comments);
+  data.sort((a, b) => b.comments - a.comments);
 
-  return {
-    dataList,
-  };
+  return data;
 };

@@ -38,3 +38,9 @@ li {
 .center-text {
   text-align: center;
 }
+
+.error {
+  color: #ff1616;
+  font-size: 35px;
+  font-weight: 500;
+}
