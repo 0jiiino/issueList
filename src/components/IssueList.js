@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import PropTypes from "prop-types";
 import { FaComments, FaCalendarAlt } from "react-icons/fa";
 import css from "styled-jsx/css";
 
@@ -53,3 +54,7 @@ const IssueList = ({ dataList }) => {
 };
 
 export default IssueList;
+
+IssueList.propTypes = {
+  dataList: PropTypes.arrayOf(PropTypes.object).isRequired,
+};

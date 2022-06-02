@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import css from "styled-jsx/css";
 
 const style = css`
@@ -29,3 +30,9 @@ const Issue = ({ number, title, url, children }) => {
 };
 
 export default Issue;
+
+Issue.propTypes = {
+  number: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+};
