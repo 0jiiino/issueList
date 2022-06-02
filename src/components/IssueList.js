@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { FaComments, FaCalendarAlt } from "react-icons/fa";
 import css from "styled-jsx/css";
 
-import Card from "./Card";
+import Issue from "./Issue";
 
 const style = css`
   .card-list {
@@ -23,7 +23,7 @@ const style = css`
   }
 `;
 
-const CardList = ({ dataList }) => {
+const IssueList = ({ dataList }) => {
   return (
     <ul className="flex space-between">
       {dataList.map(data => {
@@ -31,7 +31,12 @@ const CardList = ({ dataList }) => {
 
         return (
           <li key={data.node_id}>
-            <Card key={data.number} number={data.number} title={data.title}>
+            <Issue
+              key={data.number}
+              number={data.number}
+              title={data.title}
+              url={data.html_url}
+            >
               <ul className="card-list">
                 <li>
                   <FaComments color="rgb(255, 215, 0)" size={14} />
@@ -42,7 +47,7 @@ const CardList = ({ dataList }) => {
                   {date}
                 </li>
               </ul>
-            </Card>
+            </Issue>
           </li>
         );
       })}
@@ -51,4 +56,4 @@ const CardList = ({ dataList }) => {
   );
 };
 
-export default CardList;
+export default IssueList;

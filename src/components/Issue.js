@@ -15,10 +15,12 @@ const style = css`
   }
 `;
 
-const Card = ({ number, title, children }) => {
+const Issue = ({ number, title, url, children }) => {
   return (
     <div className="card">
-      <h2 className="header-sm center-text">#{number}</h2>
+      <a href={url}>
+        <h2 className="header-sm center-text">#{number}</h2>
+      </a>
       <h2 className="header-sm center-text">{title}</h2>
       {children}
       <style jsx>{style}</style>
@@ -26,4 +28,4 @@ const Card = ({ number, title, children }) => {
   );
 };
 
-export default Card;
+export default Issue;

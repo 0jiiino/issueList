@@ -1,5 +1,5 @@
 import { getDatas } from "../api/data.api";
-import CardList from "../components/CardList";
+import IssueList from "../components/IssueList";
 
 const Home = ({ dataList }) => {
   return (
@@ -7,12 +7,12 @@ const Home = ({ dataList }) => {
       <h1 className="header-lg center-text">
         create-react-app github issue list
       </h1>
-      <CardList dataList={dataList} />
+      <IssueList dataList={dataList} />
     </div>
   );
 };
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const { dataList } = await getDatas();
 
   return {
