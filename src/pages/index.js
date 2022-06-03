@@ -1,7 +1,7 @@
 import { dehydrate, QueryClient, useQuery } from "react-query";
 import css from "styled-jsx/css";
 
-import { getDatas } from "../api/data.api";
+import getDatas from "../api/data.api";
 import IssueList from "../components/IssueList";
 
 const style = css`
