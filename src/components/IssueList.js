@@ -6,16 +6,16 @@ import css from "styled-jsx/css";
 import Issue from "./Issue";
 
 const style = css`
-  .card-list {
+  .issue-list {
     margin: 10px;
   }
-  .card-list li {
+  .issue-list li {
     display: flex;
     justify-content: flex-start;
     font-weight: 300;
     font-size: 16px;
   }
-  .card-list li:not(:last-of-type) {
+  .issue-list li:not(:last-of-type) {
     margin-bottom: 5px;
   }
 `;
@@ -34,7 +34,7 @@ const IssueList = ({ dataList }) => {
               title={data.title}
               url={data.html_url}
             >
-              <ul className="card-list">
+              <ul className="issue-list">
                 <li>
                   <FaComments color="rgb(255, 215, 0)" size={14} />
                   {data.comments}

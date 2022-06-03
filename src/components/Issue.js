@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import css from "styled-jsx/css";
 
 const style = css`
-  .card {
+  .issue {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,7 +18,7 @@ const style = css`
 
 const Issue = ({ number, title, url, children }) => {
   return (
-    <div className="card">
+    <div className="issue">
       <a href={url}>
         <h2 className="header-small center-text">#{number}</h2>
       </a>
