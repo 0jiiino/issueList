@@ -1,34 +1,98 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 패스트레인 사전과제 \_ 노영진
 
-## Getting Started
+## 1. 기능
 
-First, run the development server:
+- 특정 깃허브의 이슈 리스트 목록 구현
 
-```bash
-npm run dev
-# or
-yarn dev
+## 2. 파일 구성
+
+```
+📦src
+ ┣ 📂api
+ ┃ ┗ 📜data.api.js
+ ┣ 📂components
+ ┃ ┣ 📜Issue.js
+ ┃ ┗ 📜IssueList.js
+ ┣ 📂pages
+ ┃ ┣ 📜_app.js
+ ┃ ┗ 📜index.js
+ ┗ 📂styles
+ ┃ ┗ 📜global.css
+📦tests
+ ┗ 📜main.spec.mjs
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 3. 실행 방법
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+1. 레포지토리 클론 받기
+2. `npm install`
+3. `URI=https://api.github.com/repos/facebook/create-react-app/issues` 환경 변수 설정
+4. `npm run build`
+5. `npm run start`
+6. 테스트 코드 실행을 원한다면 `npm run test`
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## 4. 고민한 점
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### 1. Next.js
 
-## Learn More
+CSR과 SSR의 개념은 알고 있었는데 SSR 개념을 적용해볼 수 있는 기회가 없었습니다. 따라서 이번 과제에서는 Next.js를 사용하여 SSR / SSG의 개념을 적용해보고자 하였습니다.
 
-To learn more about Next.js, take a look at the following resources:
+Next.js에서는 pre-render 방식으로 두 가지를 제시합니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Static-Generation : 빌드 타임에 HTML을 각 페이지 별로 생성. -> 요청이 올 경우, 미리 생성해둔 HTML 문서를 반환.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- `getStaticProps`: fetch 후에 받은 response가 빌드 시 고정되어 이후에 수정 불가능.
 
-## Deploy on Vercel
+2. Server-Side-Rendering : 클라이언트로부터 요청이 올 때마다 해당하는 HTML 문서를 그때그때 생성하여 반환.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `getServerSideProps`: 빌드와 관계 없이, 페이지를 요청할 때마다 서버로부터 데이터를 가져옴.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+이번 과제의 경우 데이터가 바뀌지만, 바뀌는 주기가 길다고 판단하여 `getStaticProps` 사용한 SSG 방식을 사용하였습니다.
+하지만 데이터가 아예 바뀌지 않는 경우는 아니므로 `getStaticProps`에 `revalidate` 옵션을 추가하여 ISR(Incremental Static Generation) 방식을 적용해, 일정 주기마다 데이터의 최신 여부를 검사하고 업데이트 된 데이터로 페이지를 다시 생성하게끔 구현했습니다.
+
+### 2. 상태 관리 라이브러리 (React-query)
+
+이번 과제는 서버에서 받아온 이슈 목록을 보여주기만 하면 되기 때문에 굳이 상태관리를 할 필요가 있을까 고민을 했습니다. 그렇지만 이 서비스가 단순 과제가 아닌 다른 기능들을 추가한다는 전제 하에, 여러가지 측면에서 확장성을 위해 상태 관리를 하는 것이 좋을 것 같다는 판단이 섰고, React-query를 사용하게 되었습니다.
+
+저는 이전에 팀 프로젝트에서 React-query를 사용해본 경험이 있습니다. 프로젝트가 끝난 뒤에 그때를 돌이켜보면, 당시 진행했던 프로젝트는 CRUD 작업이 많아서 캐싱된 데이터를 활용하는 React-query를 적절하게 사용하는데 있어 아쉬움이 많이 남았습니다.
+하지만 이번 과제에서는 Next.js로 작업하기도 하고, React-query가 서버 상태 관리 라이브러리이기 때문에 다른 상태 관리 라이브러리를 사용하는 것보다 React-query를 사용하는게 더 어울릴 것 같다는 생각이 들었습니다.
+
+### 3. Cypress vs Playwright
+
+이번 과제에서는 페이지가 동적으로 변하는 부분이 없기도 하고, 비동기 통신을 위한 로직이 서버 쪽에 있어 E2E 테스트가 가장 적합하다고 판단했습니다.
+
+테스트 코드를 어떤 프레임워크로 작성하면 좋을까 고민하다가 Cypress 외에 Playwright라는 프레임워크가 있는 것을 알게되었습니다.
+
+이전에 Cypress를 사용해보았을때, async / await을 사용할 수 없어서 then 체이닝을 활용해야했고, 이 과정에서 코드 한 줄이 길어지고 가독성이 떨어져 불편했던 경험이 있습니다.
+
+따라서 이번에는 async / await을 지원하는 Playwright를 사용해보고자 하였습니다.
+
+## 5. 아쉬운 점
+
+### 1. Next.js에서 link 사용하지 않음
+
+Next.js를 사용할 때 React와 다르게 편리해지는 부분 중 하나가 라우팅이라고 생각합니다. Next.js에서는 `Link`를 사용하여 path를 적어주고, pages 폴더에 path와 같은 이름을 가진 파일을 생성하면 번거롭게 라우팅을 할 필요가 없습니다.
+
+이번 과제는 하나의 페이지로 충분히 구현할 수 있는데 과연 Link를 사용해보고자 페이지를 나누는게 맞는 것일까 하는 고민을 했습니다.
+제가 지향하는 목표 중 하나는 사용자의 입장에서 사용하기 편리한 서비스를 만드는 것이고, 과제로 구현한 페이지가 실제로 상용화 되었을 때 메인 페이지와 이슈 목록을 볼 수 있는 페이지로 나눈다면 사용자의 입장에서 번거로워질 것이라고 생각하여 결론적으로 페이지를 나누지는 않았습니다.
+
+개인적으로 Link를 사용하지 못해서 조금 아쉽게 느껴지는 부분이기도 하므로 추후에 메인 페이지와 이슈 목록 페이지로 나눠볼 예정입니다.
+
+### 2. 클라이언트에서 refatch 불가능?
+
+이번 과제에서는 React-query를 사용해 서버에서 데이터를 fetch한 후에 캐시 된 데이터를 클라이언트에서 사용할 수 있게끔 구현해주었습니다. 그리고 페이지를 띄워보니 아래 사진과 같은 오류가 계속해서 발생하고 있었습니다.
+<img width="1437" alt="스크린샷 2022-06-02 오후 8 55 38" src="https://user-images.githubusercontent.com/64152520/171775621-e4bc794a-87f0-4bbf-8437-777e39aa091d.png">
+
+왜 이런 오류가 발생하는지 공식 문서도 찾아보고 여러 글들을 읽어보았지만 명확한 이유를 찾지 못했습니다. 하지만 useQuery의 `refetchOnMount` 옵션과 `refetchOnWindowFocus`옵션을 false로 설정했을 때 해당 오류는 사라졌습니다.
+
+이런 부분으로 미루어 보았을 때, 정확하진 않지만 추측해보자면 서버에서 pre-fetch한 데이터를 hydrate 작업을 통해 클라이언트와 동기화 하기 때문에 때문에 따로 클라이언트에서 refetch 작업을 할 수 없는 것 같다는 생각이 들었습니다.
+
+이 부분에 대해서 오류는 해결했지만 아직 명확한 이유를 찾지 못했기 때문에 다시 한 번 꼼꼼하게 찾아볼 예정입니다.
+
+### 3. Styled JSX
+
+이번 과제에서 css는 Next.js에서 기본으로 제공해주는 Styled JSX를 사용했습니다. Styled-JSX는 CSS-in-JS 라이브러리로, 한 구성 요소의 스타일링은 다른 구성요소에 영향을 미치지 않는다는 점과 next에서 기본으로 제공하므로 설치가 필요 없고 활용이 간편하다는 점이 장점으로 다가왔습니다.
+
+그러나 막상 사용해보니 JSX 코드와 css 코드를 분리하고 객체화 하여 사용하려고 하다보니 styled-jsx를 설치해야했고, 막상 작성해보니 styled component 방식과 유사하게 작성되는 부분이 아쉬웠습니다.
+
+다음에는 Bootstrap, Tailwind와 같은 CSS 프레임워크에도 도전해보고 싶습니다.
