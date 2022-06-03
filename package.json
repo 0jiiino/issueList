@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "playwright test",
     "lint": "next lint",
     "prepare": "husky install"
   },
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.1.6",
+    "@playwright/test": "^1.22.2",
     "eslint": "8.16.0",
     "eslint-config-next": "12.1.6",
     "eslint-plugin-react": "^7.30.0",
